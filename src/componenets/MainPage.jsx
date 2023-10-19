@@ -80,6 +80,7 @@ const PlayerButtons = styled.div`
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
+    cursor: pointer;
   }
 `;
 const Button = styled.button`
@@ -94,6 +95,7 @@ const Button = styled.button`
   font-size: 16px;
   font-weight: 700;
   line-height: normal;
+  cursor: pointer;
 `;
 const OptionGroup = styled.div`
   display: flex;
