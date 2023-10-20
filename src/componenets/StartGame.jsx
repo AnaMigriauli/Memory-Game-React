@@ -1,5 +1,5 @@
 import styled from "styled-components";
-const MainPage = () => {
+const StartGame = () => {
   return (
     <Div>
       <h1>memory</h1>
@@ -27,12 +27,12 @@ const MainPage = () => {
             <Button>6x6</Button>
           </div>
         </OptionGroup>
-        <StartGame>Start Game</StartGame>
+        <StartGameBtn>Start Game</StartGameBtn>
       </PlayOptions>
     </Div>
   );
 };
-export default MainPage;
+export default StartGame;
 
 const Div = styled.div`
   width: 375px;
@@ -102,7 +102,7 @@ const OptionGroup = styled.div`
   flex-direction: column;
 `;
 
-const StartGame = styled.button`
+const StartGameBtn = styled.button`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.yellow};
   border: none;
