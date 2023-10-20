@@ -153,11 +153,11 @@ const CustomSoloPlayer = () => {
       </GameBoard>
       <TimerMoves>
         <div>
-          <p>Time</p>
+          <span>Time</span>
           <CountUpTimer />
         </div>
         <div>
-          <p>Moves</p>
+          <span>Moves</span>
           <p>moves</p>
         </div>
       </TimerMoves>
@@ -168,6 +168,7 @@ const CustomSoloPlayer = () => {
 export default CustomSoloPlayer;
 const SoloPlayerGameBoard = styled.div`
   width: 375px;
+  height: 100vh;
   padding: 24px;
   background-color: ${({ theme }) => theme.colors.white};
 `;
@@ -226,4 +227,21 @@ const Back = styled.div`
 const TimerMoves = styled.div`
   display: flex;
   justify-content: space-between;
+  div {
+    background-color: ${({ theme }) => theme.colors.jungleMistLIight};
+    width: 46.2%;
+    height: 70px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span {
+      margin-top: 10px;
+      color: ${({ theme }) => theme.colors.cyanBlue};
+      text-align: center;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 700;
+    }
+  }
 `;

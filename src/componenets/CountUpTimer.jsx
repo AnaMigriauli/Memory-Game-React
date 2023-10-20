@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import styled from "styled-components";
 const CountUpTimer = () => {
   const [totalSeconds, setTotalSecons] = useState(0);
 
@@ -15,10 +16,20 @@ const CountUpTimer = () => {
   const seconds = totalSeconds % 60;
 
   return (
-    <p>
-      {minutes}:{seconds < 10 ? `0${seconds}` : seconds}{" "}
-    </p>
+    <Timer>
+      {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+    </Timer>
   );
 };
 
 export default CountUpTimer;
+
+const Timer = styled.p`
+  color: ${({ theme }) => theme.colors.blueWood};
+  text-align: center;
+  font-family: Atkinson Hyperlegible;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+`;
