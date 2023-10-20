@@ -8,6 +8,11 @@ const CustomSoloPlayer = () => {
   const [cardSet, setCardSet] = useState(generateCardSet());
   const [matchedPair, setMatchedPair] = useState([]);
   const [isWaiting, setIsWaiting] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+
+  const handleButtonClick = () => {
+    setClickCount((prevCount) => prevCount + 1);
+  };
 
   function generateCardSet() {
     const values = Array.from({ length: 18 }, (_, index) => index + 1);
@@ -135,6 +140,7 @@ const CustomSoloPlayer = () => {
             key={el.id}
             onClick={() => {
               checkCards(el.value, el.id, el.matched, el.isShown);
+              handleButtonClick();
             }}
             isflipped={el.isShown}
             matched={el.matched}
@@ -158,7 +164,7 @@ const CustomSoloPlayer = () => {
         </div>
         <div>
           <span>Moves</span>
-          <p>moves</p>
+          <p>{clickCount}</p>
         </div>
       </TimerMoves>
     </SoloPlayerGameBoard>
@@ -174,7 +180,7 @@ const SoloPlayerGameBoard = styled.div`
 `;
 
 const GameBoard = styled.div`
-  height: 100%;
+  /* height: 100%; */
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   margin-bottom: 102.12px;
@@ -237,9 +243,17 @@ const TimerMoves = styled.div`
     align-items: center;
     span {
       margin-top: 10px;
+      margin-bottom: 2px;
       color: ${({ theme }) => theme.colors.cyanBlue};
       text-align: center;
       font-size: 15px;
+      font-style: normal;
+      font-weight: 700;
+    }
+    p {
+      color: ${({ theme }) => theme.colors.blueWood};
+      text-align: center;
+      font-size: 24px;
       font-style: normal;
       font-weight: 700;
     }

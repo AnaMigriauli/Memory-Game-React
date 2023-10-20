@@ -1,7 +1,9 @@
-import CustomSoloPlayer from "./CustomSoloPlayer";
-// import MainPage from "./MainPage";
+// import CustomSoloPlayer from "./CustomSoloPlayer";
+
+import StartGame from "./StartGame";
 
 const MemoryGame = () => {
-  return <CustomSoloPlayer />;
+  // return <CustomSoloPlayer />;
+  return <StartGame />;
 };
 export default MemoryGame;
