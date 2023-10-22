@@ -4,7 +4,7 @@ const CountUpTimer = () => {
   const [totalSeconds, setTotalSecons] = useState(0);
 
   useEffect(() => {
-    if (totalSeconds < 3000) {
+    if (totalSeconds < 300) {
       const intervalId = setInterval(() => {
         setTotalSecons((prevSec) => prevSec + 1);
       }, 1000);

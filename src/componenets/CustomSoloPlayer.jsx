@@ -1,17 +1,66 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import CountUpTimer from "./CountUpTimer";
+import StartGame from "./StartGame";
+
+const actionTypes = {
+  SET_SELECTED_CARDS: "SET_SELECTED_CARDS",
+  SET_CARD_SET: "SET_CARD_SET",
+  SET_MATCHED_PAIR: "SET_MATCHED_PAIR",
+  SET_IS_WAITING: "SET_IS_WAITING",
+  INCREMENT_CLICK_COUNT: "INCREMENT_CLICK_COUNT",
+  RETUNRN_TO_MENU: "RETUNRN_TO_MENU",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case actionTypes.SET_SELECTED_CARDS:
+      return {
+        ...state,
+        selectedCards: action.selectedCards,
+        cardSet: action.cardSet,
+      };
+    case actionTypes.INCREMENT_CLICK_COUNT:
+      return { ...state, clickCount: action.payload };
+    case actionTypes.SET_IS_WAITING:
+      return {
+        ...state,
+        isWaiting: action.payload,
+      };
+    case actionTypes.SET_MATCHED_PAIR:
+      return { ...state, matchedPair: action.payload };
+    case actionTypes.SET_CARD_SET:
+      return {
+        ...state,
+        cardSet: action.payload,
+      };
+    case actionTypes.RETUNRN_TO_MENU:
+      return {
+        ...state,
+        menu: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
 
 const CustomSoloPlayer = () => {
-  const [selectedCards, setSelectedCards] = useState([]);
-  const [cardSet, setCardSet] = useState(generateCardSet());
-  const [matchedPair, setMatchedPair] = useState([]);
-  const [isWaiting, setIsWaiting] = useState(false);
-  const [clickCount, setClickCount] = useState(0);
+  const [state, dispatch] = useReducer(reducer, {
+    selectedCards: [],
+    cardSet: generateCardSet(),
+    matchedPair: [],
+    isWaiting: false,
+    clickCount: 0,
+    menu: false,
+  });
 
   const handleButtonClick = () => {
-    setClickCount((prevCount) => prevCount + 1);
+    dispatch({
+      type: actionTypes.INCREMENT_CLICK_COUNT,
+      payload: state.clickCount + 1,
+    });
   };
 
   function generateCardSet() {
@@ -39,103 +88,127 @@ const CustomSoloPlayer = () => {
   }
 
   const checkCards = (value, id, matched, isShown) => {
-    if (matched || isShown || selectedCards.length === 2 || isWaiting) {
+    if (
+      matched ||
+      isShown ||
+      state.selectedCards.length === 2 ||
+      state.isWaiting
+    ) {
       return;
     }
-    if (selectedCards.length < 2) {
-      setSelectedCards((prevSelectedCard) => [
-        ...prevSelectedCard,
-        { value, id },
-      ]);
 
-      setCardSet((prevSet) => {
-        return prevSet.map((card) => {
-          if (card.id === id) {
-            return { ...card, isShown: true };
-          }
-          return card;
-        });
-      });
-    }
+    dispatch({
+      type: actionTypes.SET_SELECTED_CARDS,
+      selectedCards: [...state.selectedCards, { value, id }],
+      cardSet: state.cardSet.map((card) => {
+        if (card.id === id) {
+          return { ...card, isShown: true };
+        }
+        return card;
+      }),
+    });
   };
 
   useEffect(() => {
-    if (selectedCards.length === 2) {
-      setIsWaiting(true);
-      if (selectedCards[0].value === selectedCards[1].value) {
-        markCardsToFlashYellow();
+    if (state.selectedCards.length === 2) {
+      dispatch({ type: actionTypes.SET_IS_WAITING, payload: true });
 
+      if (state.selectedCards[0].value === state.selectedCards[1].value) {
+        markCardsToFlashYellow();
         setTimeout(() => {
           removeYellowFlashFromCards();
-          setMatchedPair((prevMatchedPair) => [
-            ...prevMatchedPair,
-            selectedCards[0].value,
-            selectedCards[1].value,
-          ]);
-          setCardSet((prevSet) => {
-            return prevSet.map((card) => {
+          dispatch({
+            type: actionTypes.SET_MATCHED_PAIR,
+            payload: [
+              ...state.matchedPair,
+              state.selectedCards[0].value,
+              state.selectedCards[1].value,
+            ],
+          });
+
+          dispatch({
+            type: actionTypes.SET_CARD_SET,
+            payload: state.cardSet.map((card) => {
               if (
-                card.value === selectedCards[0].value &&
-                card.value === selectedCards[1].value
+                card.value === state.selectedCards[0].value &&
+                card.value === state.selectedCards[1].value
               ) {
                 return { ...card, matched: true };
               }
               return card;
-            });
+            }),
           });
         }, 500);
       } else {
         setTimeout(() => {
-          setCardSet((prevSet) => {
-            return prevSet.map((card) => {
+          dispatch({
+            type: actionTypes.SET_CARD_SET,
+            payload: state.cardSet.map((card) => {
               if (
-                card.id === selectedCards[0].id ||
-                card.id === selectedCards[1].id
+                card.id === state.selectedCards[0].id ||
+                card.id === state.selectedCards[1].id
               ) {
                 return { ...card, isShown: false };
               }
               return card;
-            });
+            }),
           });
         }, 1500);
       }
-      setSelectedCards([]);
-      setTimeout(() => setIsWaiting(false), 1500);
+
+      dispatch({
+        type: actionTypes.SET_SELECTED_CARDS,
+        selectedCards: [],
+        cardSet: state.cardSet,
+      });
+      setTimeout(
+        () => dispatch({ type: actionTypes.SET_IS_WAITING, payload: false }),
+        1500
+      );
     }
-  }, [selectedCards]);
+  }, [state.selectedCards]);
 
   function markCardsToFlashYellow() {
-    setCardSet((prevSet) =>
-      prevSet.map((card) => {
+    dispatch({
+      type: actionTypes.SET_CARD_SET,
+      payload: state.cardSet.map((card) => {
         if (
-          card.value === selectedCards[0].value ||
-          card.value === selectedCards[1].value
+          card.value === state.selectedCards[0].value &&
+          card.value === state.selectedCards[1].value
         ) {
           return { ...card, flashYellow: true };
         }
         return card;
-      })
-    );
+      }),
+    });
   }
 
   function removeYellowFlashFromCards() {
-    setCardSet((preSet) =>
-      preSet.map((card) => {
+    dispatch({
+      type: actionTypes.SET_CARD_SET,
+      payload: state.cardSet.map((card) => {
         if (card.flashYellow) {
           return { ...card, flashYellow: false };
         }
         return card;
-      })
-    );
+      }),
+    });
+  }
+
+  const menuHandler = () => {
+    dispatch({ type: actionTypes.RETUNRN_TO_MENU, payload: true });
+  };
+  if (state.menu) {
+    return <StartGame />;
   }
   return (
     <SoloPlayerGameBoard>
-      <div>
+      <Header>
         <h1>memory</h1>
-        <button>menu</button>
-      </div>
+        <button onClick={() => menuHandler()}>menu</button>
+      </Header>
       <GameBoard>
-        {cardSet.map((el) => (
+        {state.cardSet.map((el) => (
           <Card
             key={el.id}
             onClick={() => {
@@ -164,7 +237,7 @@ const CustomSoloPlayer = () => {
         </div>
         <div>
           <span>Moves</span>
-          <p>{clickCount}</p>
+          <p>{state.clickCount}</p>
         </div>
       </TimerMoves>
     </SoloPlayerGameBoard>
@@ -179,8 +252,32 @@ const SoloPlayerGameBoard = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 80px;
+  h1 {
+    color: ${({ theme }) => theme.colors.blue};
+
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  button {
+    width: 78px;
+    height: 40px;
+    background-color: ${({ theme }) => theme.colors.yellow};
+    color: ${({ theme }) => theme.colors.white};
+    border: none;
+    border-radius: 26px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+  }
+`;
 const GameBoard = styled.div`
-  /* height: 100%; */
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   margin-bottom: 102.12px;
