@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-const CountUpTimer = () => {
+const CountUpTimer = ({ matchPairLength }) => {
   const [totalSeconds, setTotalSecons] = useState(0);
 
   useEffect(() => {
-    if (totalSeconds < 300) {
+    if (matchPairLength !== 36) {
       const intervalId = setInterval(() => {
         setTotalSecons((prevSec) => prevSec + 1);
       }, 1000);
       return () => clearInterval(intervalId);
     }
-  }, [totalSeconds]);
+  }, [totalSeconds, matchPairLength]);
 
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;

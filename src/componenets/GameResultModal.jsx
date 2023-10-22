@@ -2,14 +2,14 @@ import styled from "styled-components";
 import Modal from "./portal/Modal";
 import RestartButton from "./buttons/RestartButton";
 import SetUpNewGameButton from "./buttons/SetUpNewGameButton";
-const GameResultModal = ({ moves }) => {
+const GameResultModal = ({ moves, timer }) => {
   return (
     <Modal>
       <Header>You did it!</Header>
       <HeaderText>Game over! Here’s how you got on…</HeaderText>
       <Result>
         <span>Time Elapsed</span>
-        <p>1:53</p>
+        <p>{timer}</p>
       </Result>
       <Result>
         <span>Moves Taken</span>

@@ -1,19 +1,26 @@
 import { useState } from "react";
 import styled from "styled-components";
-import CustomSoloPlayer from "./CustomSoloPlayer";
+import { HardMemoryGame } from "./SoloHardMemoryGame";
+import { EasyMemoryGame } from "./SoloEasyMemoryGame";
 const StartGame = () => {
   const [theme, setTheme] = useState("Numbers");
   const [players, setPlayers] = useState(1);
   const [gridSize, setGridSize] = useState("4x4");
-  const [gameStarted, setGameStarted] = useState(false);
+  const [EasygameStarted, setEasyGameStarted] = useState(false);
+  const [HardgameStarted, setHardEGameStarted] = useState(false);
   const gameStartHandler = () => {
-    if (theme === "Numbers" || players === 1 || gridSize === "6x6") {
-      setGameStarted(true);
+    if (theme === "Numbers" && players === 1 && gridSize === "6x6") {
+      setHardEGameStarted(true);
+    } else if (theme === "Numbers" && players === 1 && gridSize === "4x4") {
+      setEasyGameStarted(true);
     }
   };
-  if (gameStarted) {
-    return <CustomSoloPlayer />;
+  if (EasygameStarted) {
+    return <EasyMemoryGame />;
+  } else if (HardgameStarted) {
+    return <HardMemoryGame />;
   }
+
   return (
     <Div>
       <h1>memory</h1>
