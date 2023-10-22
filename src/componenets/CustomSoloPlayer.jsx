@@ -1,9 +1,9 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import CountUpTimer from "./CountUpTimer";
 import StartGame from "./StartGame";
-
+import GameResultModal from "./GameResultModal";
 const actionTypes = {
   SET_SELECTED_CARDS: "SET_SELECTED_CARDS",
   SET_CARD_SET: "SET_CARD_SET",
@@ -55,6 +55,7 @@ const CustomSoloPlayer = () => {
     clickCount: 0,
     menu: false,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleButtonClick = () => {
     dispatch({
@@ -201,46 +202,50 @@ const CustomSoloPlayer = () => {
   if (state.menu) {
     return <StartGame />;
   }
+
   return (
-    <SoloPlayerGameBoard>
-      <Header>
-        <h1>memory</h1>
-        <button onClick={() => menuHandler()}>menu</button>
-      </Header>
-      <GameBoard>
-        {state.cardSet.map((el) => (
-          <Card
-            key={el.id}
-            onClick={() => {
-              checkCards(el.value, el.id, el.matched, el.isShown);
-              handleButtonClick();
-            }}
-            isflipped={el.isShown}
-            matched={el.matched}
-          >
-            <div>
-              {el.isShown ? (
-                <Back matched={el.matched} flashyellow={el.flashYellow}>
-                  {el.value}
-                </Back>
-              ) : (
-                <Front></Front>
-              )}
-            </div>
-          </Card>
-        ))}
-      </GameBoard>
-      <TimerMoves>
-        <div>
-          <span>Time</span>
-          <CountUpTimer />
-        </div>
-        <div>
-          <span>Moves</span>
-          <p>{state.clickCount}</p>
-        </div>
-      </TimerMoves>
-    </SoloPlayerGameBoard>
+    <>
+      <GameResultModal moves={state.clickCount} />
+      <SoloPlayerGameBoard>
+        <Header>
+          <h1>memory</h1>
+          <button onClick={() => menuHandler()}>menu</button>
+        </Header>
+        <GameBoard>
+          {state.cardSet.map((el) => (
+            <Card
+              key={el.id}
+              onClick={() => {
+                checkCards(el.value, el.id, el.matched, el.isShown);
+                handleButtonClick();
+              }}
+              isflipped={el.isShown}
+              matched={el.matched}
+            >
+              <div>
+                {el.isShown ? (
+                  <Back matched={el.matched} flashyellow={el.flashYellow}>
+                    {el.value}
+                  </Back>
+                ) : (
+                  <Front></Front>
+                )}
+              </div>
+            </Card>
+          ))}
+        </GameBoard>
+        <TimerMoves>
+          <div>
+            <span>Time</span>
+            <CountUpTimer />
+          </div>
+          <div>
+            <span>Moves</span>
+            <p>{state.clickCount}</p>
+          </div>
+        </TimerMoves>
+      </SoloPlayerGameBoard>
+    </>
   );
 };
 

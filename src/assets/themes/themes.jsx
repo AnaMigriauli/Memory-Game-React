@@ -5,7 +5,9 @@ export const DefaultColors = {
     jungleMist: "#BCCED9",
     cyanBlue: "#7191A5",
     white: "#FCFCFC",
+    whiteSmoke: "#F2F2F2 ",
     yellow: "#FDA214",
     jungleMistLIight: "#DFE7EC",
+    black: "#000000",
   },
 };
