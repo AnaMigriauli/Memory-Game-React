@@ -8,6 +8,7 @@ const actionTypes = {
   SET_IS_WAITING: "SET_IS_WAITING",
   INCREMENT_CLICK_COUNT: "INCREMENT_CLICK_COUNT",
   RETUNRN_TO_MENU: "RETUNRN_TO_MENU",
+  RESTART_GAME: "RESTART_GAME",
 };
 
 const reducer = (state, action) => {
@@ -37,6 +38,16 @@ const reducer = (state, action) => {
         ...state,
         menu: action.payload,
       };
+    case actionTypes.RESTART_GAME:
+      return {
+        ...state,
+        selectedCards: [],
+        cardSet: action.payload(),
+        matchedPair: [],
+        isWaiting: false,
+        clickCount: 0,
+        menu: false,
+      };
 
     default:
       return state;
@@ -52,6 +63,12 @@ const useMemoryGame = (totalPairs) => {
     clickCount: 0,
     menu: false,
   });
+  const handleButtonClick = () => {
+    dispatch({
+      type: actionTypes.INCREMENT_CLICK_COUNT,
+      payload: state.clickCount + 1,
+    });
+  };
   function generateCardSet() {
     const values = Array.from({ length: totalPairs }, (_, index) => index + 1);
 
@@ -75,12 +92,6 @@ const useMemoryGame = (totalPairs) => {
     // Shuffle the Numbers
     return pairedValues.sort(() => 0.5 - Math.random());
   }
-  const handleButtonClick = () => {
-    dispatch({
-      type: actionTypes.INCREMENT_CLICK_COUNT,
-      payload: state.clickCount + 1,
-    });
-  };
 
   useEffect(() => {
     if (state.selectedCards.length === 2) {
@@ -191,7 +202,21 @@ const useMemoryGame = (totalPairs) => {
     dispatch({ type: actionTypes.RETUNRN_TO_MENU, payload: true });
   };
 
-  return { state, checkCards, handleButtonClick, menuHandler };
+  const resumeGame = () => {
+    dispatch({ type: actionTypes.RETUNRN_TO_MENU, payload: false });
+  };
+  const restartGame = () => {
+    dispatch({ type: actionTypes.RESTART_GAME, payload: generateCardSet });
+  };
+
+  return {
+    state,
+    checkCards,
+    handleButtonClick,
+    menuHandler,
+    resumeGame,
+    restartGame,
+  };
 };
 
 export default useMemoryGame;

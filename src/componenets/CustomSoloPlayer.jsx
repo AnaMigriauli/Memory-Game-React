@@ -1,23 +1,38 @@
-// import { useEffect, useReducer, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import CountUpTimer from "./CountUpTimer";
-import StartGame from "./StartGame";
 import GameResultModal from "./GameResultModal";
 import useMemoryGame from "./hook/useMemoryGame";
 import GameBoard from "./GameBoard";
+import GameOptionsModal from "./GameOptionsModal";
+import StartGame from "./StartGame";
 
 const CustomSoloPlayer = ({ totalPairs }) => {
-  const { state, menuHandler, checkCards, handleButtonClick } =
-    useMemoryGame(totalPairs);
+  const {
+    state,
+    menuHandler,
+    checkCards,
+    handleButtonClick,
+    resumeGame,
+    restartGame,
+  } = useMemoryGame(totalPairs);
+  const [newGame, setNewGame] = useState(false);
 
-  if (state.menu) {
+  if (newGame) {
     return <StartGame />;
   }
 
   return (
     <>
-      {state.matchedPair.length === 36 && (
+      {state.matchedPair.length === totalPairs * 2 && (
         <GameResultModal moves={state.clickCount} timer={<CountUpTimer />} />
+      )}
+      {state.menu && (
+        <GameOptionsModal
+          startNewGame={() => setNewGame(true)}
+          resumeGame={() => resumeGame()}
+          restartGame={() => restartGame()}
+        />
       )}
       <SoloPlayerGameBoard>
         <Header>
@@ -33,7 +48,11 @@ const CustomSoloPlayer = ({ totalPairs }) => {
         <TimerMoves>
           <div>
             <span>Time</span>
-            <CountUpTimer matchPairLength={state.matchedPair.length} />
+            <CountUpTimer
+              matchPairLength={state.matchedPair.length}
+              totalPairs={totalPairs}
+              restartGame={state.clickCount}
+            />
           </div>
           <div>
             <span>Moves</span>

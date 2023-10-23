@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const GameBoard = ({ cardSet, checkCards, handleButtonClick, totalPairs }) => {
-  console.log(totalPairs);
   return (
     <StyledGameBoard totalPairs={totalPairs}>
       {cardSet.map((el) => (

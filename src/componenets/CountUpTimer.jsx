@@ -1,16 +1,26 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-const CountUpTimer = ({ matchPairLength }) => {
+const CountUpTimer = ({ matchPairLength, totalPairs, restartGame }) => {
   const [totalSeconds, setTotalSecons] = useState(0);
 
+  console.log(matchPairLength, totalPairs);
+
   useEffect(() => {
-    if (matchPairLength !== 36) {
+    if (restartGame) {
+      setTotalSecons(0);
+    }
+  }, [restartGame]);
+
+  console.log(restartGame);
+
+  useEffect(() => {
+    if (matchPairLength !== totalPairs * 2) {
       const intervalId = setInterval(() => {
         setTotalSecons((prevSec) => prevSec + 1);
       }, 1000);
       return () => clearInterval(intervalId);
     }
-  }, [totalSeconds, matchPairLength]);
+  }, [totalSeconds, matchPairLength, totalPairs]);
 
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;

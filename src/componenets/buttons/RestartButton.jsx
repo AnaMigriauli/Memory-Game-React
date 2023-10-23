@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-const RestartButton = () => {
-  return <Restart>Restart</Restart>;
+const RestartButton = ({ onclick }) => {
+  return <Restart onClick={onclick}>Restart</Restart>;
 };
 export default RestartButton;
 
@@ -17,4 +17,5 @@ const Restart = styled.button`
   font-weight: 700;
   border: none;
   margin: 16px 0;
+  cursor: pointer;
 `;

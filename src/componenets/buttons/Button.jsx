@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const SetUpNewGameButton = () => {
-  return <SetupNewGame>Setup New Game</SetupNewGame>;
+const Button = (props) => {
+  return <SetupNewGame onClick={props.onclick}>{props.children}</SetupNewGame>;
 };
-export default SetUpNewGameButton;
+export default Button;
 
 const SetupNewGame = styled.button`
   width: 100%;
@@ -16,4 +16,6 @@ const SetupNewGame = styled.button`
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
+  margin-bottom: 16px;
+  cursor: pointer;
 `;

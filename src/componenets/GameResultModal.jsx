@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import Modal from "./portal/Modal";
+import ModalSoloPlayer from "./portals/ModalSoloPlayer";
 import RestartButton from "./buttons/RestartButton";
-import SetUpNewGameButton from "./buttons/SetUpNewGameButton";
+import Button from "./buttons/Button";
+
 const GameResultModal = ({ moves, timer }) => {
   return (
-    <Modal>
+    <ModalSoloPlayer>
       <Header>You did it!</Header>
       <HeaderText>Game over! Here’s how you got on…</HeaderText>
       <Result>
@@ -16,8 +17,8 @@ const GameResultModal = ({ moves, timer }) => {
         <p>{moves}</p>
       </Result>
       <RestartButton />
-      <SetUpNewGameButton />
-    </Modal>
+      <Button>Setup New Game</Button>
+    </ModalSoloPlayer>
   );
 };
 
