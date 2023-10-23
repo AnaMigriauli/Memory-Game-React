@@ -9,6 +9,7 @@ const actionTypes = {
   INCREMENT_CLICK_COUNT: "INCREMENT_CLICK_COUNT",
   RETUNRN_TO_MENU: "RETUNRN_TO_MENU",
   RESTART_GAME: "RESTART_GAME",
+  TYMER: "TYMER",
 };
 
 const reducer = (state, action) => {
@@ -47,8 +48,10 @@ const reducer = (state, action) => {
         isWaiting: false,
         clickCount: 0,
         menu: false,
+        timer: true,
       };
-
+    case actionTypes.TYMER:
+      return { ...state, timer: action.payload };
     default:
       return state;
   }
@@ -62,6 +65,7 @@ const useMemoryGame = (totalPairs) => {
     isWaiting: false,
     clickCount: 0,
     menu: false,
+    timer: false,
   });
   const handleButtonClick = () => {
     dispatch({
@@ -209,6 +213,10 @@ const useMemoryGame = (totalPairs) => {
     dispatch({ type: actionTypes.RESTART_GAME, payload: generateCardSet });
   };
 
+  const timerHandler = () => {
+    dispatch({ type: actionTypes.TYMER, payload: false });
+  };
+
   return {
     state,
     checkCards,
@@ -216,6 +224,7 @@ const useMemoryGame = (totalPairs) => {
     menuHandler,
     resumeGame,
     restartGame,
+    timerHandler,
   };
 };
 

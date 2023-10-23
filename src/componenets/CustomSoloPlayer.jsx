@@ -15,6 +15,7 @@ const CustomSoloPlayer = ({ totalPairs }) => {
     handleButtonClick,
     resumeGame,
     restartGame,
+    timerHandler,
   } = useMemoryGame(totalPairs);
   const [newGame, setNewGame] = useState(false);
 
@@ -51,7 +52,8 @@ const CustomSoloPlayer = ({ totalPairs }) => {
             <CountUpTimer
               matchPairLength={state.matchedPair.length}
               totalPairs={totalPairs}
-              restartGame={state.clickCount}
+              timer={state.timer}
+              timerHandler={() => timerHandler()}
             />
           </div>
           <div>
