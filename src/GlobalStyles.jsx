@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@700&display=swap');
    *{
     margin:0 ;
     padding:0;
@@ -17,6 +18,5 @@ export const GlobalStyles = createGlobalStyle`
     
     font-family: 'Atkinson Hyperlegible', sans-serif;
   }
-  @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@700&display=swap');
 
 `;

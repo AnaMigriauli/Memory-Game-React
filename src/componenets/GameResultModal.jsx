@@ -3,7 +3,7 @@ import ModalSoloPlayer from "./portals/ModalSoloPlayer";
 import RestartButton from "./buttons/RestartButton";
 import Button from "./buttons/Button";
 
-const GameResultModal = ({ moves, timer }) => {
+const GameResultModal = ({ moves, timer, restartGame, startNewGame }) => {
   return (
     <ModalSoloPlayer>
       <Header>You did it!</Header>
@@ -16,8 +16,8 @@ const GameResultModal = ({ moves, timer }) => {
         <span>Moves Taken</span>
         <p>{moves}</p>
       </Result>
-      <RestartButton />
-      <Button>Setup New Game</Button>
+      <RestartButton onclick={restartGame} />
+      <Button onclick={startNewGame}>Setup New Game</Button>
     </ModalSoloPlayer>
   );
 };

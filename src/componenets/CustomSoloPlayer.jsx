@@ -7,7 +7,7 @@ import GameBoard from "./GameBoard";
 import GameOptionsModal from "./GameOptionsModal";
 import StartGame from "./StartGame";
 
-const CustomSoloPlayer = ({ totalPairs }) => {
+const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
   const {
     state,
     menuHandler,
@@ -16,17 +16,28 @@ const CustomSoloPlayer = ({ totalPairs }) => {
     resumeGame,
     restartGame,
     timerHandler,
-  } = useMemoryGame(totalPairs);
+  } = useMemoryGame(totalPairs, iconsArr);
   const [newGame, setNewGame] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState();
 
   if (newGame) {
     return <StartGame />;
   }
 
+  const timeElapsedHandler = (time) => {
+    setTimeElapsed(time);
+  };
+
   return (
     <>
-      {state.matchedPair.length === totalPairs * 2 && (
-        <GameResultModal moves={state.clickCount} timer={<CountUpTimer />} />
+      {(state.matchedPair.length === totalPairs * 2 ||
+        state.matchedPair.length === iconsArr?.length * 2) && (
+        <GameResultModal
+          moves={state.clickCount}
+          timer={timeElapsed}
+          restartGame={() => restartGame()}
+          startNewGame={() => setNewGame(true)}
+        />
       )}
       {state.menu && (
         <GameOptionsModal
@@ -38,13 +49,14 @@ const CustomSoloPlayer = ({ totalPairs }) => {
       <SoloPlayerGameBoard>
         <Header>
           <h1>memory</h1>
-          <button onClick={() => menuHandler()}>menu</button>
+          <button onClick={() => menuHandler()}>Menu</button>
         </Header>
         <GameBoard
           cardSet={state.cardSet}
           checkCards={checkCards}
           handleButtonClick={handleButtonClick}
           totalPairs={totalPairs}
+          iconsArr={iconsArr?.length}
         />
         <TimerMoves>
           <div>
@@ -54,6 +66,8 @@ const CustomSoloPlayer = ({ totalPairs }) => {
               totalPairs={totalPairs}
               timer={state.timer}
               timerHandler={() => timerHandler()}
+              timeElapsedHandler={timeElapsedHandler}
+              iconsArr={iconsArr}
             />
           </div>
           <div>

@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-const CountUpTimer = ({ matchPairLength, totalPairs, timer, timerHandler }) => {
+const CountUpTimer = ({
+  matchPairLength,
+  totalPairs,
+  timer,
+  timerHandler,
+  timeElapsedHandler,
+  iconsArr,
+}) => {
   const [totalSeconds, setTotalSecons] = useState(0);
 
   useEffect(() => {
@@ -11,16 +18,30 @@ const CountUpTimer = ({ matchPairLength, totalPairs, timer, timerHandler }) => {
   }, [timer, timerHandler]);
 
   useEffect(() => {
-    if (matchPairLength !== totalPairs * 2) {
+    if (
+      matchPairLength !== totalPairs * 2 ||
+      matchPairLength !== iconsArr?.length * 2
+    ) {
       const intervalId = setInterval(() => {
         setTotalSecons((prevSec) => prevSec + 1);
       }, 1000);
       return () => clearInterval(intervalId);
     }
-  }, [totalSeconds, matchPairLength, totalPairs, timerHandler]);
+  }, [matchPairLength, totalPairs, timerHandler, iconsArr]);
 
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
+
+  if (
+    matchPairLength === totalPairs * 2 ||
+    matchPairLength === iconsArr?.length * 2
+  ) {
+    timeElapsedHandler(
+      <Timer>
+        {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+      </Timer>
+    );
+  }
 
   return (
     <Timer>

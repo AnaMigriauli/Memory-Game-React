@@ -1,24 +1,37 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { HardMemoryGame } from "./SoloHardMemoryGame";
-import { EasyMemoryGame } from "./SoloEasyMemoryGame";
+import {
+  EasyMemoryGameIcon,
+  EasyMemoryGameNumber,
+  HardMemoryGameIcon,
+  HardMemoryGameNumber,
+} from "./SoloMemoryGame";
+
 const StartGame = () => {
   const [theme, setTheme] = useState("Numbers");
   const [players, setPlayers] = useState(1);
   const [gridSize, setGridSize] = useState("4x4");
-  const [EasygameStarted, setEasyGameStarted] = useState(false);
-  const [HardgameStarted, setHardEGameStarted] = useState(false);
+  const [gameType, setGameType] = useState(null);
+
   const gameStartHandler = () => {
     if (theme === "Numbers" && players === 1 && gridSize === "6x6") {
-      setHardEGameStarted(true);
+      setGameType("hardNumber");
     } else if (theme === "Numbers" && players === 1 && gridSize === "4x4") {
-      setEasyGameStarted(true);
+      setGameType("easyNumber");
+    } else if (theme === "Icons" && players === 1 && gridSize === "4x4") {
+      setGameType("easyIcons");
+    } else if (theme === "Icons" && players === 1 && gridSize === "6x6") {
+      setGameType("hardIcons");
     }
   };
-  if (EasygameStarted) {
-    return <EasyMemoryGame />;
-  } else if (HardgameStarted) {
-    return <HardMemoryGame />;
+  if (gameType === "easyNumber") {
+    return <EasyMemoryGameNumber />;
+  } else if (gameType === "hardNumber") {
+    return <HardMemoryGameNumber />;
+  } else if (gameType === "easyIcons") {
+    return <EasyMemoryGameIcon />;
+  } else if (gameType === "hardIcons") {
+    return <HardMemoryGameIcon />;
   }
 
   return (

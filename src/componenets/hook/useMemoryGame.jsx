@@ -10,6 +10,7 @@ const actionTypes = {
   RETUNRN_TO_MENU: "RETUNRN_TO_MENU",
   RESTART_GAME: "RESTART_GAME",
   TYMER: "TYMER",
+  ICONS: "ICONS",
 };
 
 const reducer = (state, action) => {
@@ -52,12 +53,13 @@ const reducer = (state, action) => {
       };
     case actionTypes.TYMER:
       return { ...state, timer: action.payload };
+
     default:
       return state;
   }
 };
 
-const useMemoryGame = (totalPairs) => {
+const useMemoryGame = (totalPairs, iconsArr) => {
   const [state, dispatch] = useReducer(reducer, {
     selectedCards: [],
     cardSet: generateCardSet(),
@@ -67,6 +69,7 @@ const useMemoryGame = (totalPairs) => {
     menu: false,
     timer: false,
   });
+
   const handleButtonClick = () => {
     dispatch({
       type: actionTypes.INCREMENT_CLICK_COUNT,
@@ -74,27 +77,53 @@ const useMemoryGame = (totalPairs) => {
     });
   };
   function generateCardSet() {
-    const values = Array.from({ length: totalPairs }, (_, index) => index + 1);
+    if (iconsArr) {
+      const pairedIcons = iconsArr.flatMap((value) => [
+        {
+          id: uuidv4(),
+          value,
+          matched: false,
+          isShown: false,
+          flashYellow: false,
+          isIconVisible: true,
+        },
+        {
+          id: uuidv4(),
+          value,
+          matched: false,
+          isShown: false,
+          flashYellow: false,
+          isIconVisible: true,
+        },
+      ]);
 
-    const pairedValues = values.flatMap((value) => [
-      {
-        id: uuidv4(),
-        value,
-        matched: false,
-        isShown: false,
-        flashYellow: false,
-      },
-      {
-        id: uuidv4(),
-        value,
-        matched: false,
-        isShown: false,
-        flashYellow: false,
-      },
-    ]);
+      // Shuffle the  icons
+      return pairedIcons.sort(() => 0.5 - Math.random());
+    } else {
+      const values = Array.from(
+        { length: totalPairs },
+        (_, index) => index + 1
+      );
 
-    // Shuffle the Numbers
-    return pairedValues.sort(() => 0.5 - Math.random());
+      const pairedValues = values.flatMap((value) => [
+        {
+          id: uuidv4(),
+          value,
+          matched: false,
+          isShown: false,
+          flashYellow: false,
+        },
+        {
+          id: uuidv4(),
+          value,
+          matched: false,
+          isShown: false,
+          flashYellow: false,
+        },
+      ]);
+      // Shuffle the Numbers
+      return pairedValues.sort(() => 0.5 - Math.random());
+    }
   }
 
   useEffect(() => {
@@ -141,7 +170,7 @@ const useMemoryGame = (totalPairs) => {
               return card;
             }),
           });
-        }, 1500);
+        }, 1000);
       }
 
       dispatch({
@@ -151,7 +180,7 @@ const useMemoryGame = (totalPairs) => {
       });
       setTimeout(
         () => dispatch({ type: actionTypes.SET_IS_WAITING, payload: false }),
-        1500
+        1000
       );
     }
   }, [state.selectedCards]);

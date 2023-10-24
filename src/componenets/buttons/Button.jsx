@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-const Button = (props) => {
-  return <SetupNewGame onClick={props.onclick}>{props.children}</SetupNewGame>;
+const Button = ({ onclick, children }) => {
+  return <SetupNewGame onClick={onclick}>{children}</SetupNewGame>;
 };
 export default Button;
 
