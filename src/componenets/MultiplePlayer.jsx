@@ -7,9 +7,6 @@ import styled from "styled-components";
 import { useState } from "react";
 
 const MultiplePlayer = ({ totalPairs, iconsArr }) => {
-  const [playerNumber, setPlayerNumber] = useState("1P");
-  const [playerScore, setPlayerScore] = useState({ P1: 0, P2: 0 });
-
   const {
     state,
     menuHandler,
@@ -20,20 +17,6 @@ const MultiplePlayer = ({ totalPairs, iconsArr }) => {
     timerHandler,
   } = useMemoryGame(totalPairs, iconsArr);
 
-  console.log(state.matchedPair);
-
-  const switchPlayer = () => {
-    setPlayerNumber((prevPlayer) => (prevPlayer === "1P" ? "2P" : "1P"));
-  };
-  if (state.matchedPair) {
-    setPlayerScore((prevScores) => ({
-      ...prevScores,
-      [playerNumber]: prevScores[playerNumber] + 1,
-    }));
-    switchPlayer();
-  } else {
-    switchPlayer();
-  }
   return (
     <GameContainer>
       <GameHeader menuHandler={menuHandler} />
@@ -45,17 +28,8 @@ const MultiplePlayer = ({ totalPairs, iconsArr }) => {
         iconsArr={iconsArr?.length}
       />
       <Players>
-        <Player
-          PlayerNumber="P1"
-          active={playerNumber === "1P"}
-          onClick={() => setPlayerNumber("1P")}
-          playerScore={playerScore}
-        ></Player>
-        <Player
-          PlayerNumber="P2"
-          active={playerNumber === "2P"}
-          onClick={() => setPlayerNumber("2P")}
-        ></Player>
+        <Player PlayerNumber="P1" active={state.activePlayer === "P1"}></Player>
+        <Player PlayerNumber="P2" active={state.activePlayer === "P2"}></Player>
         {/* <Player
           PlayerNumber="P3"
           active={playerNumber === "3P"}

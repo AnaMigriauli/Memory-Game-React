@@ -10,7 +10,7 @@ const actionTypes = {
   RETUNRN_TO_MENU: "RETUNRN_TO_MENU",
   RESTART_GAME: "RESTART_GAME",
   TYMER: "TYMER",
-  ICONS: "ICONS",
+  SWITCH_PLAYER: "SWITCH_PLAYER",
 };
 
 const reducer = (state, action) => {
@@ -53,7 +53,11 @@ const reducer = (state, action) => {
       };
     case actionTypes.TYMER:
       return { ...state, timer: action.payload };
-
+    case actionTypes.SWITCH_PLAYER:
+      return {
+        ...state,
+        activePlayer: state.activePlayer === "P1" ? "P2" : "P1",
+      };
     default:
       return state;
   }
@@ -68,6 +72,8 @@ const useMemoryGame = (totalPairs, iconsArr) => {
     clickCount: 0,
     menu: false,
     timer: false,
+    activePlayer: "P1",
+    playersScore: { P1: 0, P2: 0 },
   });
 
   const handleButtonClick = () => {
@@ -129,7 +135,7 @@ const useMemoryGame = (totalPairs, iconsArr) => {
   useEffect(() => {
     if (state.selectedCards.length === 2) {
       dispatch({ type: actionTypes.SET_IS_WAITING, payload: true });
-
+      dispatch({ type: actionTypes.SWITCH_PLAYER });
       if (state.selectedCards[0].value === state.selectedCards[1].value) {
         markCardsToFlashYellow();
         setTimeout(() => {
@@ -206,6 +212,8 @@ const useMemoryGame = (totalPairs, iconsArr) => {
       }),
     });
   };
+
+  // console.log(state.activePlayer);
   function markCardsToFlashYellow() {
     dispatch({
       type: actionTypes.SET_CARD_SET,
