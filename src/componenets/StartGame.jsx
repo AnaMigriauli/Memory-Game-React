@@ -5,7 +5,11 @@ import {
   EasyMemoryGameNumber,
   HardMemoryGameIcon,
   HardMemoryGameNumber,
-} from "./SoloMemoryGame";
+  EasyMultiplePlayerNumber,
+  EasyMultiplePlayerIcon,
+  HardMultiplePlayerIcon,
+  HardMultiplePlayerNumber,
+} from "./MemoryGame";
 
 const StartGame = () => {
   const [theme, setTheme] = useState("Numbers");
@@ -22,8 +26,18 @@ const StartGame = () => {
       setGameType("easyIcons");
     } else if (theme === "Icons" && players === 1 && gridSize === "6x6") {
       setGameType("hardIcons");
+    } else if (theme === "Numbers" && players === 2 && gridSize === "4x4") {
+      setGameType("easytwoPlayer");
+    } else if (theme === "Numbers" && players === 2 && gridSize === "6x6") {
+      setGameType("hardtwoPlayer");
+    } else if (theme === "Icons" && players === 2 && gridSize === "4x4") {
+      setGameType("easytwoPlayerIcons");
+    } else if (theme === "Icons" && players === 2 && gridSize === "6x6") {
+      setGameType("hardtwoPlayerIcons");
     }
   };
+
+  // console.log(theme, players, gridSize);
   if (gameType === "easyNumber") {
     return <EasyMemoryGameNumber />;
   } else if (gameType === "hardNumber") {
@@ -32,6 +46,14 @@ const StartGame = () => {
     return <EasyMemoryGameIcon />;
   } else if (gameType === "hardIcons") {
     return <HardMemoryGameIcon />;
+  } else if (gameType === "easytwoPlayer") {
+    return <EasyMultiplePlayerNumber />;
+  } else if (gameType === "hardtwoPlayer") {
+    return <HardMultiplePlayerNumber />;
+  } else if (gameType === "easytwoPlayerIcons") {
+    return <EasyMultiplePlayerIcon />;
+  } else if (gameType === "hardtwoPlayerIcons") {
+    return <HardMultiplePlayerIcon />;
   }
 
   return (

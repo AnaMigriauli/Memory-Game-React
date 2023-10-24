@@ -170,7 +170,7 @@ const useMemoryGame = (totalPairs, iconsArr) => {
               return card;
             }),
           });
-        }, 1000);
+        }, 1500);
       }
 
       dispatch({
@@ -180,7 +180,7 @@ const useMemoryGame = (totalPairs, iconsArr) => {
       });
       setTimeout(
         () => dispatch({ type: actionTypes.SET_IS_WAITING, payload: false }),
-        1000
+        1500
       );
     }
   }, [state.selectedCards]);

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-// import { useState } from "react";
+
 const GameBoard = ({
   cardSet,
   checkCards,
@@ -7,8 +7,6 @@ const GameBoard = ({
   totalPairs,
   iconsArr,
 }) => {
-  console.log(iconsArr);
-  console.log(totalPairs);
   return (
     <StyledGameBoard totalpairs={totalPairs} iconsarr={iconsArr}>
       {cardSet.map((el) => {

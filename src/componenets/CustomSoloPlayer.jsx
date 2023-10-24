@@ -6,6 +6,8 @@ import useMemoryGame from "./hook/useMemoryGame";
 import GameBoard from "./GameBoard";
 import GameOptionsModal from "./GameOptionsModal";
 import StartGame from "./StartGame";
+import GameHeader from "./GameHeader";
+import GameContainer from "./GameContainer";
 
 const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
   const {
@@ -46,11 +48,9 @@ const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
           restartGame={() => restartGame()}
         />
       )}
-      <SoloPlayerGameBoard>
-        <Header>
-          <h1>memory</h1>
-          <button onClick={() => menuHandler()}>Menu</button>
-        </Header>
+      <GameContainer>
+        <GameHeader menuHandler={menuHandler} />
+
         <GameBoard
           cardSet={state.cardSet}
           checkCards={checkCards}
@@ -75,44 +75,12 @@ const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
             <p>{state.clickCount}</p>
           </div>
         </TimerMoves>
-      </SoloPlayerGameBoard>
+      </GameContainer>
     </>
   );
 };
 
 export default CustomSoloPlayer;
-const SoloPlayerGameBoard = styled.div`
-  width: 375px;
-  height: 100vh;
-  padding: 24px;
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 80px;
-  h1 {
-    color: ${({ theme }) => theme.colors.blue};
-
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  button {
-    width: 78px;
-    height: 40px;
-    background-color: ${({ theme }) => theme.colors.yellow};
-    color: ${({ theme }) => theme.colors.white};
-    border: none;
-    border-radius: 26px;
-    text-align: center;
-    cursor: pointer;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-  }
-`;
 
 const TimerMoves = styled.div`
   display: flex;
