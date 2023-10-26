@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-const Player = ({ PlayerNumber, active }) => {
+const Player = ({ PlayerNumber, active, score }) => {
   return (
     <Players active={active}>
       <span>{PlayerNumber}</span>
-      <p>0</p>
+      <p>{score}</p>
     </Players>
   );
 };

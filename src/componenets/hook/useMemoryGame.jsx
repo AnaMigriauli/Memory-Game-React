@@ -9,8 +9,11 @@ const actionTypes = {
   INCREMENT_CLICK_COUNT: "INCREMENT_CLICK_COUNT",
   RETUNRN_TO_MENU: "RETUNRN_TO_MENU",
   RESTART_GAME: "RESTART_GAME",
-  TYMER: "TYMER",
+  TIMER: "TIMER",
   SWITCH_PLAYER: "SWITCH_PLAYER",
+  COUNT_SCORE: "COUNT_SCORE",
+  NEW_GAME: "NEW_GAME",
+  WINNER: "WINNER",
 };
 
 const reducer = (state, action) => {
@@ -50,21 +53,35 @@ const reducer = (state, action) => {
         clickCount: 0,
         menu: false,
         timer: true,
+        activePlayer: "P1",
+        playersScore: { P1: 0, P2: 0 },
       };
-    case actionTypes.TYMER:
+    case actionTypes.TIMER:
       return { ...state, timer: action.payload };
     case actionTypes.SWITCH_PLAYER:
       return {
         ...state,
         activePlayer: state.activePlayer === "P1" ? "P2" : "P1",
       };
+    case actionTypes.COUNT_SCORE:
+      return {
+        ...state,
+        playersScore: {
+          ...state.playersScore,
+          [action.payload]: state.playersScore[action.payload] + 1,
+        },
+      };
+    case actionTypes.NEW_GAME:
+      return { ...state, newGame: action.payload };
+    case actionTypes.WINNER:
+      return { ...state, isWinner: action.payload };
     default:
       return state;
   }
 };
 
 const useMemoryGame = (totalPairs, iconsArr) => {
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatch] = useReducer(reducer, undefined, () => ({
     selectedCards: [],
     cardSet: generateCardSet(),
     matchedPair: [],
@@ -74,7 +91,9 @@ const useMemoryGame = (totalPairs, iconsArr) => {
     timer: false,
     activePlayer: "P1",
     playersScore: { P1: 0, P2: 0 },
-  });
+    newGame: false,
+    isWinner: null,
+  }));
 
   const handleButtonClick = () => {
     dispatch({
@@ -132,13 +151,20 @@ const useMemoryGame = (totalPairs, iconsArr) => {
     }
   }
 
+  const newGameHandler = () => {
+    dispatch({ type: actionTypes.NEW_GAME, payload: true });
+  };
+
   useEffect(() => {
+    let timer1, timer2;
     if (state.selectedCards.length === 2) {
       dispatch({ type: actionTypes.SET_IS_WAITING, payload: true });
       dispatch({ type: actionTypes.SWITCH_PLAYER });
       if (state.selectedCards[0].value === state.selectedCards[1].value) {
         markCardsToFlashYellow();
-        setTimeout(() => {
+        ScoreCounterHandler();
+
+        timer1 = setTimeout(() => {
           removeYellowFlashFromCards();
           dispatch({
             type: actionTypes.SET_MATCHED_PAIR,
@@ -163,7 +189,7 @@ const useMemoryGame = (totalPairs, iconsArr) => {
           });
         }, 500);
       } else {
-        setTimeout(() => {
+        timer2 = setTimeout(() => {
           dispatch({
             type: actionTypes.SET_CARD_SET,
             payload: state.cardSet.map((card) => {
@@ -189,6 +215,12 @@ const useMemoryGame = (totalPairs, iconsArr) => {
         1500
       );
     }
+
+    // Cleanup function
+    return () => {
+      if (timer1) clearTimeout(timer1);
+      if (timer2) clearTimeout(timer2);
+    };
   }, [state.selectedCards]);
 
   const checkCards = (value, id, matched, isShown) => {
@@ -213,7 +245,17 @@ const useMemoryGame = (totalPairs, iconsArr) => {
     });
   };
 
-  // console.log(state.activePlayer);
+  useEffect(() => {
+    winnerHandler();
+  }, [state.playersScore]);
+
+  const ScoreCounterHandler = () => {
+    dispatch({
+      type: actionTypes.COUNT_SCORE,
+      payload: state.activePlayer,
+    });
+  };
+
   function markCardsToFlashYellow() {
     dispatch({
       type: actionTypes.SET_CARD_SET,
@@ -251,7 +293,19 @@ const useMemoryGame = (totalPairs, iconsArr) => {
   };
 
   const timerHandler = () => {
-    dispatch({ type: actionTypes.TYMER, payload: false });
+    dispatch({ type: actionTypes.TIMER, payload: false });
+  };
+
+  const winnerHandler = () => {
+    if (state.playersScore.P1 + state.playersScore.P2 === totalPairs) {
+      let winner;
+      if (state.playersScore.P1 === state.playersScore.P2) {
+        winner === "TIE";
+      } else {
+        winner = state.playersScore.P1 > state.playersScore.P2 ? 1 : 2;
+      }
+      dispatch({ type: actionTypes.WINNER, payload: winner });
+    }
   };
 
   return {
@@ -262,6 +316,7 @@ const useMemoryGame = (totalPairs, iconsArr) => {
     resumeGame,
     restartGame,
     timerHandler,
+    newGameHandler,
   };
 };
 

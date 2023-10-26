@@ -18,11 +18,12 @@ const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
     resumeGame,
     restartGame,
     timerHandler,
+    newGameHandler,
   } = useMemoryGame(totalPairs, iconsArr);
-  const [newGame, setNewGame] = useState(false);
+
   const [timeElapsed, setTimeElapsed] = useState();
 
-  if (newGame) {
+  if (state.newGame) {
     return <StartGame />;
   }
 
@@ -38,12 +39,12 @@ const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
           moves={state.clickCount}
           timer={timeElapsed}
           restartGame={() => restartGame()}
-          startNewGame={() => setNewGame(true)}
+          startNewGame={() => newGameHandler()}
         />
       )}
       {state.menu && (
         <GameOptionsModal
-          startNewGame={() => setNewGame(true)}
+          startNewGame={() => newGameHandler()}
           resumeGame={() => resumeGame()}
           restartGame={() => restartGame()}
         />

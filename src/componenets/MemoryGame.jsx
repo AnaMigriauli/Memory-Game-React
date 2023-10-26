@@ -1,5 +1,5 @@
 import CustomSoloPlayer from "./CustomSoloPlayer";
-import MultiplePlayer from "./MultiplePlayer";
+import MultiplePlayer from "./MultiPlayer";
 import icon1 from "../assets/images/1.svg";
 import icon2 from "../assets/images/2.svg";
 import icon3 from "../assets/images/3.svg";
