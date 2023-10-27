@@ -221,6 +221,9 @@ const PlayerButton = styled.button`
   font-style: normal;
   font-weight: 700;
   cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.blue_light};
+  }
 `;
 const Button = styled.button`
   width: 100%;
@@ -236,6 +239,9 @@ const Button = styled.button`
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.blue_light};
+  }
 `;
 const OptionGroup = styled.div`
   display: flex;
@@ -255,4 +261,7 @@ const StartGameBtn = styled.button`
   font-style: normal;
   font-weight: 700;
   cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.yellow_light};
+  }
 `;

@@ -1,7 +1,11 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const RestartButton = ({ onclick }) => {
   return <Restart onClick={onclick}>Restart</Restart>;
+};
+RestartButton.propTypes = {
+  onclick: PropTypes.func.isRequired,
 };
 export default RestartButton;
 
@@ -18,4 +22,7 @@ const Restart = styled.button`
   border: none;
   margin: 16px 0;
   cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.yellow_light};
+  }
 `;

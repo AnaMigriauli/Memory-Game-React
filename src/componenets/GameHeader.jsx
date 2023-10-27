@@ -33,5 +33,8 @@ const Header = styled.div`
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.yellow_light};
+    }
   }
 `;

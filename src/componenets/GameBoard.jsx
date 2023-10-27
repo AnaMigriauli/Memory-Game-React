@@ -74,6 +74,9 @@ const Front = styled.div`
   position: absolute;
   backface-visibility: hidden;
   background-color: ${({ theme }) => theme.colors.blueWood};
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.blue_light};
+  }
 `;
 
 const Back = styled.div`

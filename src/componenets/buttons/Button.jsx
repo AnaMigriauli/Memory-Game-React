@@ -18,4 +18,8 @@ const SetupNewGame = styled.button`
   font-weight: 700;
   margin-bottom: 16px;
   cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.blue_light};
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;
