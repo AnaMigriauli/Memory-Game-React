@@ -48,13 +48,33 @@ export const EasyMemoryGameIcon = () => (
 export const HardMemoryGameIcon = () => (
   <CustomSoloPlayer iconsArr={iconsArrHard} />
 );
-export const EasyMultiplePlayerNumber = () => <MultiplePlayer totalPairs={8} />;
-export const HardMultiplePlayerNumber = () => (
-  <MultiplePlayer totalPairs={18} />
+export const EasyMultiplePlayerNumber = ({ isThreePlayer, isForthPlayer }) => {
+  return (
+    <MultiplePlayer
+      totalPairs={8}
+      isThreePlayer={isThreePlayer}
+      isForthPlayer={isForthPlayer}
+    />
+  );
+};
+export const HardMultiplePlayerNumber = ({ isThreePlayer, isForthPlayer }) => (
+  <MultiplePlayer
+    totalPairs={18}
+    isThreePlayer={isThreePlayer}
+    isForthPlayer={isForthPlayer}
+  />
 );
-export const EasyMultiplePlayerIcon = () => (
-  <MultiplePlayer iconsArr={iconsArrEasy} />
+export const EasyMultiplePlayerIcon = ({ isThreePlayer, isForthPlayer }) => (
+  <MultiplePlayer
+    iconsArr={iconsArrEasy}
+    isThreePlayer={isThreePlayer}
+    isForthPlayer={isForthPlayer}
+  />
 );
-export const HardMultiplePlayerIcon = () => (
-  <MultiplePlayer iconsArr={iconsArrHard} />
+export const HardMultiplePlayerIcon = ({ isThreePlayer, isForthPlayer }) => (
+  <MultiplePlayer
+    iconsArr={iconsArrHard}
+    isThreePlayer={isThreePlayer}
+    isForthPlayer={isForthPlayer}
+  />
 );

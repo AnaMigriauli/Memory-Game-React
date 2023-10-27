@@ -11,9 +11,12 @@ const actionTypes = {
   RESTART_GAME: "RESTART_GAME",
   TIMER: "TIMER",
   SWITCH_PLAYER: "SWITCH_PLAYER",
+  SET_THIRD_PLAYER: "SET_THIRD_PLAYER",
+  SET_FOURTH_PLAYER: "SET_FOURTH_PLAYER",
   COUNT_SCORE: "COUNT_SCORE",
   NEW_GAME: "NEW_GAME",
   WINNER: "WINNER",
+  PLAYER_NUMBER: "PLAYER_NUMBER",
 };
 
 const reducer = (state, action) => {
@@ -54,14 +57,18 @@ const reducer = (state, action) => {
         menu: false,
         timer: true,
         activePlayer: "P1",
-        playersScore: { P1: 0, P2: 0 },
+        playersScore: { P1: 0, P2: 0, P3: 0, P4: 0 },
+        newGame: false,
+        isWinner: null,
+        threePlayer: false,
+        totalPlayer: 2,
       };
     case actionTypes.TIMER:
       return { ...state, timer: action.payload };
     case actionTypes.SWITCH_PLAYER:
       return {
         ...state,
-        activePlayer: state.activePlayer === "P1" ? "P2" : "P1",
+        activePlayer: action.payload,
       };
     case actionTypes.COUNT_SCORE:
       return {
@@ -75,6 +82,11 @@ const reducer = (state, action) => {
       return { ...state, newGame: action.payload };
     case actionTypes.WINNER:
       return { ...state, isWinner: action.payload };
+    case actionTypes.SET_THIRD_PLAYER:
+      return { ...state, totalPlayer: action.payload };
+    case actionTypes.SET_FOURTH_PLAYER:
+      console.log(state.totalPlayer);
+      return { ...state, totalPlayer: action.payload };
     default:
       return state;
   }
@@ -90,9 +102,10 @@ const useMemoryGame = (totalPairs, iconsArr) => {
     menu: false,
     timer: false,
     activePlayer: "P1",
-    playersScore: { P1: 0, P2: 0 },
+    playersScore: { P1: 0, P2: 0, P3: 0, P4: 0 },
     newGame: false,
     isWinner: null,
+    totalPlayer: 2,
   }));
 
   const handleButtonClick = () => {
@@ -156,15 +169,15 @@ const useMemoryGame = (totalPairs, iconsArr) => {
   };
 
   useEffect(() => {
-    let timer1, timer2;
     if (state.selectedCards.length === 2) {
       dispatch({ type: actionTypes.SET_IS_WAITING, payload: true });
-      dispatch({ type: actionTypes.SWITCH_PLAYER });
+
+      switchPlayerHandler();
       if (state.selectedCards[0].value === state.selectedCards[1].value) {
         markCardsToFlashYellow();
         ScoreCounterHandler();
 
-        timer1 = setTimeout(() => {
+        setTimeout(() => {
           removeYellowFlashFromCards();
           dispatch({
             type: actionTypes.SET_MATCHED_PAIR,
@@ -189,7 +202,7 @@ const useMemoryGame = (totalPairs, iconsArr) => {
           });
         }, 500);
       } else {
-        timer2 = setTimeout(() => {
+        setTimeout(() => {
           dispatch({
             type: actionTypes.SET_CARD_SET,
             payload: state.cardSet.map((card) => {
@@ -215,13 +228,31 @@ const useMemoryGame = (totalPairs, iconsArr) => {
         1500
       );
     }
-
-    // Cleanup function
-    return () => {
-      if (timer1) clearTimeout(timer1);
-      if (timer2) clearTimeout(timer2);
-    };
   }, [state.selectedCards]);
+
+  const switchPlayerHandler = () => {
+    let nextPlayer;
+    if (state.totalPlayer === 2) {
+      nextPlayer = state.activePlayer === "P1" ? "P2" : "P1";
+    } else if (state.totalPlayer === 3) {
+      nextPlayer =
+        state.activePlayer === "P1"
+          ? "P2"
+          : state.activePlayer === "P2"
+          ? "P3"
+          : "P1";
+    } else if (state.totalPlayer === 4) {
+      nextPlayer =
+        state.activePlayer === "P1"
+          ? "P2"
+          : state.activePlayer === "P2"
+          ? "P3"
+          : state.activePlayer === "P3"
+          ? "P4"
+          : "P1";
+    }
+    dispatch({ type: actionTypes.SWITCH_PLAYER, payload: nextPlayer });
+  };
 
   const checkCards = (value, id, matched, isShown) => {
     if (
@@ -245,6 +276,12 @@ const useMemoryGame = (totalPairs, iconsArr) => {
     });
   };
 
+  const thirdPlayerHandler = () => {
+    dispatch({ type: actionTypes.SET_THIRD_PLAYER, payload: 3 });
+  };
+  const fourthPlayerHandler = () => {
+    dispatch({ type: actionTypes.SET_FOURTH_PLAYER, payload: 4 });
+  };
   useEffect(() => {
     winnerHandler();
   }, [state.playersScore]);
@@ -297,17 +334,32 @@ const useMemoryGame = (totalPairs, iconsArr) => {
   };
 
   const winnerHandler = () => {
-    if (state.playersScore.P1 + state.playersScore.P2 === totalPairs) {
+    if (
+      state.playersScore.P1 +
+        state.playersScore.P2 +
+        state.playersScore.P3 +
+        state.playersScore.P4 ===
+      totalPairs
+    ) {
+      const scores = state.playersScore;
+      const maxScore = Math.max(scores.P1, scores.P2, scores.P3, scores.P4);
+
+      const winners = [];
+      if (scores.P1 === maxScore) winners.push(1);
+      if (scores.P2 === maxScore) winners.push(2);
+      if (scores.P3 === maxScore) winners.push(3);
+      if (scores.P4 === maxScore) winners.push(4);
+
       let winner;
-      if (state.playersScore.P1 === state.playersScore.P2) {
-        winner === "TIE";
+      if (winners.length > 1) {
+        winner = "TIE";
       } else {
-        winner = state.playersScore.P1 > state.playersScore.P2 ? 1 : 2;
+        winner = winners[0];
       }
+
       dispatch({ type: actionTypes.WINNER, payload: winner });
     }
   };
-
   return {
     state,
     checkCards,
@@ -317,7 +369,8 @@ const useMemoryGame = (totalPairs, iconsArr) => {
     restartGame,
     timerHandler,
     newGameHandler,
+    thirdPlayerHandler,
+    fourthPlayerHandler,
   };
 };
-
 export default useMemoryGame;

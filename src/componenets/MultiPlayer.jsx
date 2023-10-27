@@ -7,7 +7,13 @@ import Player from "./Player";
 import styled from "styled-components";
 import StartGame from "./StartGame";
 import MultiPlayerResultModal from "./MultiPlayerResultModal";
-const MultiplePlayer = ({ totalPairs, iconsArr }) => {
+import { useEffect } from "react";
+const MultiplePlayer = ({
+  totalPairs,
+  iconsArr,
+  isThreePlayer,
+  isForthPlayer,
+}) => {
   const {
     state,
     menuHandler,
@@ -16,12 +22,28 @@ const MultiplePlayer = ({ totalPairs, iconsArr }) => {
     resumeGame,
     restartGame,
     newGameHandler,
+    thirdPlayerHandler,
+    fourthPlayerHandler,
   } = useMemoryGame(totalPairs, iconsArr);
+
+  useEffect(() => {
+    if (isForthPlayer) {
+      fourthPlayerHandler();
+    } else if (isThreePlayer) {
+      thirdPlayerHandler();
+    }
+  }, [isThreePlayer, isForthPlayer]);
 
   if (state.newGame) {
     return <StartGame />;
   }
 
+  console.log(
+    state.totalPlayer,
+    isThreePlayer,
+    isForthPlayer,
+    fourthPlayerHandler
+  );
   return (
     <>
       {(state.matchedPair.length === totalPairs * 2 ||
@@ -31,6 +53,8 @@ const MultiplePlayer = ({ totalPairs, iconsArr }) => {
           startNewGame={() => newGameHandler()}
           pair={state.playersScore}
           isWinner={state.isWinner}
+          isThreePlayer={isThreePlayer}
+          isForthPlayer={isForthPlayer}
         />
       )}
       {state.menu && (
@@ -60,16 +84,20 @@ const MultiplePlayer = ({ totalPairs, iconsArr }) => {
             active={state.activePlayer === "P2"}
             score={state.playersScore.P2}
           ></Player>
-          {/* <Player
-          PlayerNumber="P3"
-          active={playerNumber === "3P"}
-          onClick={() => setPlayerNumber("3P")}
-          ></Player>
-          <Player
-          PlayerNumber="P4"
-          active={playerNumber === "4P"}
-          onClick={() => setPlayerNumber("4P")}
-        ></Player> */}
+          {isThreePlayer && (
+            <Player
+              PlayerNumber="P3"
+              active={state.activePlayer === "P3"}
+              score={state.playersScore.P3}
+            ></Player>
+          )}
+          {isForthPlayer && (
+            <Player
+              PlayerNumber="P4"
+              active={state.activePlayer === "P4"}
+              score={state.playersScore.P4}
+            ></Player>
+          )}
         </Players>
       </GameContainer>
     </>

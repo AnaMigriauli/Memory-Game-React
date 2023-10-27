@@ -8,6 +8,8 @@ const MultiPlayerResultModal = ({
   isWinner,
   restartGame,
   startNewGame,
+  isThreePlayer,
+  isForthPlayer,
 }) => {
   console.log(isWinner);
   return (
@@ -33,14 +35,26 @@ const MultiPlayerResultModal = ({
         </span>
         <p>{pair.P2} Pairs</p>
       </Result>
-      {/* <Result> 
-        <span></span>
-        <p></p>
-      </Result>
-      <Result>
-        <span></span>
-        <p></p>
-      </Result> */}
+      {isThreePlayer && isForthPlayer && (
+        <Result iswinner={isWinner === 3 || isWinner === "TIE"}>
+          <span>
+            {isWinner === 3 || isWinner === "TIE"
+              ? "Player 3(Winner)"
+              : "Player 3"}
+          </span>
+          <p>{pair.P3} Pairs</p>
+        </Result>
+      )}
+      {isForthPlayer && (
+        <Result iswinner={isWinner === 4 || isWinner === "TIE"}>
+          <span>
+            {isWinner === 3 || isWinner === "TIE"
+              ? "Player 4(Winner)"
+              : "Player 4"}
+          </span>
+          <p>{pair.P4} Pairs</p>
+        </Result>
+      )}
       <RestartButton onclick={restartGame} />
       <Button onclick={startNewGame}>Setup New Game</Button>
     </ModalMultiplePlayer>

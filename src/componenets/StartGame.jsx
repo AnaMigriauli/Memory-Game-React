@@ -10,12 +10,15 @@ import {
   HardMultiplePlayerIcon,
   HardMultiplePlayerNumber,
 } from "./MemoryGame";
-
+// import useMemoryGame from "./hook/useMemoryGame";
 const StartGame = () => {
+  // const { playerNumberHandler } = useMemoryGame();
   const [theme, setTheme] = useState("Numbers");
   const [players, setPlayers] = useState(1);
   const [gridSize, setGridSize] = useState("4x4");
   const [gameType, setGameType] = useState(null);
+  const [isThreePlayer, setIsThreePlayer] = useState(false);
+  const [isForthPlayer, setIsForthPlayer] = useState(false);
 
   const gameStartHandler = () => {
     if (theme === "Numbers" && players === 1 && gridSize === "6x6") {
@@ -27,17 +30,44 @@ const StartGame = () => {
     } else if (theme === "Icons" && players === 1 && gridSize === "6x6") {
       setGameType("hardIcons");
     } else if (theme === "Numbers" && players === 2 && gridSize === "4x4") {
-      setGameType("easytwoPlayer");
+      setGameType("easyMultiplePlayer");
     } else if (theme === "Numbers" && players === 2 && gridSize === "6x6") {
-      setGameType("hardtwoPlayer");
+      setGameType("hardMultiplePlayer");
     } else if (theme === "Icons" && players === 2 && gridSize === "4x4") {
-      setGameType("easytwoPlayerIcons");
+      setGameType("easyMultiplePlayerIcons");
     } else if (theme === "Icons" && players === 2 && gridSize === "6x6") {
-      setGameType("hardtwoPlayerIcons");
+      setGameType("hardMultiplePlayerIcons");
+    } else if (theme === "Numbers" && players === 3 && gridSize === "4x4") {
+      setGameType("easyMultiplePlayer");
+      setIsThreePlayer(true);
+    } else if (theme === "Numbers" && players === 3 && gridSize === "6x6") {
+      setGameType("hardMultiplePlayer");
+      setIsThreePlayer(true);
+    } else if (theme === "Icons" && players === 3 && gridSize === "4x4") {
+      setGameType("easyMultiplePlayerIcons");
+      setIsThreePlayer(true);
+    } else if (theme === "Icons" && players === 3 && gridSize === "6x6") {
+      setGameType("hardMultiplePlayerIcons");
+      setIsThreePlayer(true);
+    } else if (theme === "Numbers" && players === 4 && gridSize === "4x4") {
+      setGameType("easyMultiplePlayer");
+      setIsForthPlayer(true);
+      setIsThreePlayer(true);
+    } else if (theme === "Numbers" && players === 4 && gridSize === "6x6") {
+      setGameType("hardMultiplePlayer");
+      setIsForthPlayer(true);
+      setIsThreePlayer(true);
+    } else if (theme === "Icons" && players === 4 && gridSize === "4x4") {
+      setGameType("easyMultiplePlayerIcons");
+      setIsForthPlayer(true);
+      setIsThreePlayer(true);
+    } else if (theme === "Icons" && players === 4 && gridSize === "6x6") {
+      setGameType("hardMultiplePlayerIcons");
+      setIsForthPlayer(true);
+      setIsThreePlayer(true);
     }
   };
 
-  // console.log(theme, players, gridSize);
   if (gameType === "easyNumber") {
     return <EasyMemoryGameNumber />;
   } else if (gameType === "hardNumber") {
@@ -46,14 +76,34 @@ const StartGame = () => {
     return <EasyMemoryGameIcon />;
   } else if (gameType === "hardIcons") {
     return <HardMemoryGameIcon />;
-  } else if (gameType === "easytwoPlayer") {
-    return <EasyMultiplePlayerNumber />;
-  } else if (gameType === "hardtwoPlayer") {
-    return <HardMultiplePlayerNumber />;
-  } else if (gameType === "easytwoPlayerIcons") {
-    return <EasyMultiplePlayerIcon />;
-  } else if (gameType === "hardtwoPlayerIcons") {
-    return <HardMultiplePlayerIcon />;
+  } else if (gameType === "easyMultiplePlayer") {
+    return (
+      <EasyMultiplePlayerNumber
+        isThreePlayer={isThreePlayer}
+        isForthPlayer={isForthPlayer}
+      />
+    );
+  } else if (gameType === "hardMultiplePlayer") {
+    return (
+      <HardMultiplePlayerNumber
+        isThreePlayer={isThreePlayer}
+        isForthPlayer={isForthPlayer}
+      />
+    );
+  } else if (gameType === "easyMultiplePlayerIcons") {
+    return (
+      <EasyMultiplePlayerIcon
+        isThreePlayer={isThreePlayer}
+        isForthPlayer={isForthPlayer}
+      />
+    );
+  } else if (gameType === "hardMultiplePlayerIcons") {
+    return (
+      <HardMultiplePlayerIcon
+        isThreePlayer={isThreePlayer}
+        isForthPlayer={isForthPlayer}
+      />
+    );
   }
 
   return (
