@@ -51,7 +51,8 @@ Error generating stack: `+o.message+`
   #root{
     display:flex;
     justify-content:center;
-    height:100%;
+    height:100vh;
+    
   }
   
   body{
