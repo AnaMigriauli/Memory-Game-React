@@ -2,7 +2,8 @@ import styled from "styled-components";
 import ModalMultiplePlayer from "./portals/ModalMultiplePlayer";
 import RestartButton from "./buttons/RestartButton";
 import Button from "./buttons/Button";
-
+import PropTypes from "prop-types";
+import { Breakpoints } from "../assets/themes/themes";
 const MultiPlayerResultModal = ({
   pair,
   isWinner,
@@ -11,7 +12,6 @@ const MultiPlayerResultModal = ({
   isThreePlayer,
   isForthPlayer,
 }) => {
-  console.log(isWinner);
   return (
     <ModalMultiplePlayer>
       <Header>
@@ -55,12 +55,24 @@ const MultiPlayerResultModal = ({
           <p>{pair.P4} Pairs</p>
         </Result>
       )}
-      <RestartButton onclick={restartGame} />
-      <Button onclick={startNewGame}>Setup New Game</Button>
+      <BtnContainer>
+        <RestartButton onclick={restartGame} />
+        <Button onclick={startNewGame}>Setup New Game</Button>
+      </BtnContainer>
     </ModalMultiplePlayer>
   );
 };
 export default MultiPlayerResultModal;
+
+MultiPlayerResultModal.propTypes = {
+  pair: PropTypes.array.isRequired,
+  isWinner: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  restartGame: PropTypes.func.isRequired,
+  startNewGame: PropTypes.func.isRequired,
+  isThreePlayer: PropTypes.bool.isRequired,
+  isForthPlayer: PropTypes.bool.isRequired,
+};
 
 const Result = styled.div`
   height: 48px;
@@ -89,6 +101,18 @@ const Result = styled.div`
     font-weight: 700;
     line-height: normal;
   }
+  @media (min-width: ${Breakpoints.medium}) {
+    height: 72px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    padding: 17px 32px 15px 32px;
+    span {
+      font-size: 18px;
+    }
+    p {
+      font-size: 32px;
+    }
+  }
 `;
 
 const Header = styled.h1`
@@ -98,6 +122,10 @@ const Header = styled.h1`
   font-style: normal;
   font-weight: 700;
   margin-bottom: 9px;
+  @media (min-width: ${Breakpoints.medium}) {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
 `;
 
 const Text = styled.p`
@@ -107,4 +135,17 @@ const Text = styled.p`
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
+  @media (min-width: ${Breakpoints.medium}) {
+    font-size: 18px;
+    margin-bottom: 40px;
+  }
+`;
+
+const BtnContainer = styled.div`
+  @media (min-width: ${Breakpoints.medium}) {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 40px;
+  }
 `;

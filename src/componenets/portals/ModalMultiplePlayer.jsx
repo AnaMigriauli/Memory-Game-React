@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { createPortal } from "react-dom";
+import { Breakpoints } from "../../assets/themes/themes";
 
 const ModalMultiplePlayer = (props) => {
   return createPortal(
@@ -23,6 +24,12 @@ const Div = styled.div`
   background-color: ${({ theme }) => theme.colors.whiteSmoke};
   border-radius: 10px;
   z-index: 5;
+  @media (min-width: ${Breakpoints.medium}) {
+    width: 654px;
+    height: 702px;
+    border-radius: 20px;
+    padding: 51px 56px 69px 56px;
+  }
 `;
 const Overlay = styled.div`
   position: absolute;

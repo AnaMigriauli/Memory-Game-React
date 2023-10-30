@@ -10,9 +10,9 @@ import {
   HardMultiplePlayerIcon,
   HardMultiplePlayerNumber,
 } from "./MemoryGame";
-// import useMemoryGame from "./hook/useMemoryGame";
+import { Breakpoints } from "../assets/themes/themes";
+
 const StartGame = () => {
-  // const { playerNumberHandler } = useMemoryGame();
   const [theme, setTheme] = useState("Numbers");
   const [players, setPlayers] = useState(1);
   const [gridSize, setGridSize] = useState("4x4");
@@ -112,7 +112,7 @@ const StartGame = () => {
       <PlayOptions>
         <OptionGroup>
           <h2>Select Theme</h2>
-          <div>
+          <BtnContainer>
             <Button
               active={theme === "Numbers"}
               onClick={() => setTheme("Numbers")}
@@ -125,7 +125,7 @@ const StartGame = () => {
             >
               Icons
             </Button>
-          </div>
+          </BtnContainer>
         </OptionGroup>
         <OptionGroup>
           <h2>Numbers of Players</h2>
@@ -143,7 +143,7 @@ const StartGame = () => {
         </OptionGroup>
         <OptionGroup>
           <h2>Grid Size </h2>
-          <div>
+          <BtnContainer>
             <Button
               active={gridSize === "4x4"}
               onClick={() => setGridSize("4x4")}
@@ -156,7 +156,7 @@ const StartGame = () => {
             >
               6x6
             </Button>
-          </div>
+          </BtnContainer>
         </OptionGroup>
         <StartGameBtn
           onClick={() => {
@@ -172,16 +172,26 @@ const StartGame = () => {
 export default StartGame;
 
 const Div = styled.div`
-  width: 375px;
+  width: 100%;
   height: 100%;
   background-color: ${({ theme }) => theme.colors.blue};
   padding: 80px 24px 116px 24px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   h1 {
     font-size: 32px;
     color: ${({ theme }) => theme.colors.white};
     margin-bottom: 45px;
+  }
+  @media (min-width: ${Breakpoints.medium}) {
+    padding: 169px 57px 168px 57px;
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 78px;
+    }
   }
 `;
 const PlayOptions = styled.div`
@@ -197,15 +207,36 @@ const PlayOptions = styled.div`
     font-weight: 700;
     text-align: start;
   }
-  div {
-    display: flex;
-    gap: 11px;
+
+  @media (min-width: ${Breakpoints.medium}) {
+    width: 654px;
+    height: 559px;
+    padding: 56px;
+    height: 559px;
+    border-radius: 20px;
+    h2 {
+      font-size: 20px;
+    }
   }
 `;
+
+const BtnContainer = styled.div`
+  display: flex;
+  gap: 11px;
+
+  @media (min-width: ${Breakpoints.medium}) {
+    gap: 30px;
+  }
+`;
+
 const PlayerButtons = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 24px;
+  @media (min-width: ${Breakpoints.medium}) {
+    gap: 21px;
+    margin-bottom: 33px;
+  }
 `;
 
 const PlayerButton = styled.button`
@@ -223,6 +254,10 @@ const PlayerButton = styled.button`
   cursor: pointer;
   &:hover {
     background-color: ${({ theme }) => theme.colors.blue_light};
+  }
+  @media (min-width: ${Breakpoints.medium}) {
+    height: 52px;
+    font-size: 26px;
   }
 `;
 const Button = styled.button`
@@ -242,10 +277,16 @@ const Button = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.colors.blue_light};
   }
+  @media (min-width: ${Breakpoints.medium}) {
+    height: 52px;
+    font-size: 24px;
+    margin-bottom: 32px;
+  }
 `;
 const OptionGroup = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 16px;
 `;
 
 const StartGameBtn = styled.button`
@@ -263,5 +304,10 @@ const StartGameBtn = styled.button`
   cursor: pointer;
   &:hover {
     background-color: ${({ theme }) => theme.colors.yellow_light};
+  }
+  @media (min-width: ${Breakpoints.medium}) {
+    height: 70px;
+    border-radius: 35px;
+    font-size: 32px;
   }
 `;

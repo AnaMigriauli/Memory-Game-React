@@ -1,5 +1,6 @@
 import styled from "styled-components";
-
+import { Breakpoints } from "../assets/themes/themes";
+import PropTypes from "prop-types";
 const Player = ({ PlayerNumber, active, score }) => {
   return (
     <Players active={active}>
@@ -9,6 +10,12 @@ const Player = ({ PlayerNumber, active, score }) => {
   );
 };
 export default Player;
+
+Player.propTypes = {
+  PlayerNumber: PropTypes.string.isRequired,
+  active: PropTypes.bool.isRequired,
+  score: PropTypes.number.isRequired,
+};
 
 const Players = styled.div`
   width: 64px;
@@ -27,7 +34,6 @@ const Players = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    margin-bottom: 2px;
   }
   p {
     color: ${({ theme, active }) =>
@@ -35,5 +41,16 @@ const Players = styled.div`
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
+    margin-top: 2px;
+  }
+  @media (min-width: ${Breakpoints.medium}) {
+    width: 164px;
+    height: 80px;
+    border-radius: 10px;
+    text-align: start;
+    padding: 14px 0 12px 16px !important;
+    p {
+      margin-top: 5px;
+    }
   }
 `;

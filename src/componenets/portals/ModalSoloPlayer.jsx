@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import styled from "styled-components";
+import { Breakpoints } from "../../assets/themes/themes";
 const ModalSoloPlayer = (props) => {
   return createPortal(
     <div>
@@ -22,6 +23,12 @@ const Div = styled.div`
   background-color: ${({ theme }) => theme.colors.whiteSmoke};
   border-radius: 10px;
   z-index: 5;
+  @media (min-width: ${Breakpoints.medium}) {
+    width: 654px;
+    height: 510px;
+    padding: 51px 56px 69px 56px;
+    border-radius: 20px;
+  }
 `;
 const Overlay = styled.div`
   position: absolute;

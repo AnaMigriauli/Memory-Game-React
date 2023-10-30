@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+
 const CountUpTimer = ({
   matchPairLength,
   totalPairs,
@@ -52,11 +54,19 @@ const CountUpTimer = ({
 
 export default CountUpTimer;
 
+CountUpTimer.propTypes = {
+  matchPairLength: PropTypes.number.isRequired,
+  totalPairs: PropTypes.number.isRequired,
+  timer: PropTypes.bool.isRequired,
+  timerHandler: PropTypes.func.isRequired,
+  timeElapsedHandler: PropTypes.func.isRequired,
+  iconsArr: PropTypes.array,
+};
+
 const Timer = styled.p`
   color: ${({ theme }) => theme.colors.blueWood};
   text-align: center;
   font-family: Atkinson Hyperlegible;
-  font-size: 24px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

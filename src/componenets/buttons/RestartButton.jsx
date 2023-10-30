@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { Breakpoints } from "../../assets/themes/themes";
 
 const RestartButton = ({ onclick }) => {
   return <Restart onClick={onclick}>Restart</Restart>;
@@ -24,5 +25,9 @@ const Restart = styled.button`
   cursor: pointer;
   &:hover {
     background-color: ${({ theme }) => theme.colors.yellow_light};
+  }
+  @media (min-width: ${Breakpoints.medium}) {
+    margin: 0;
+    height: 52px;
   }
 `;

@@ -8,8 +8,11 @@ import GameOptionsModal from "./GameOptionsModal";
 import StartGame from "./StartGame";
 import GameHeader from "./GameHeader";
 import GameContainer from "./GameContainer";
+import { Breakpoints } from "../assets/themes/themes";
+import PropTypes from "prop-types";
 
 const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
+  // const [windowWidth, setWindowWidth] = useState(false);
   const {
     state,
     menuHandler,
@@ -50,7 +53,11 @@ const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
         />
       )}
       <GameContainer>
-        <GameHeader menuHandler={menuHandler} />
+        <GameHeader
+          menuHandler={menuHandler}
+          restartGame={() => restartGame()}
+          startNewGame={() => newGameHandler()}
+        />
 
         <GameBoard
           cardSet={state.cardSet}
@@ -83,12 +90,17 @@ const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
 
 export default CustomSoloPlayer;
 
+CustomSoloPlayer.propTypes = {
+  totalPairs: PropTypes.number.isRequired,
+  iconsArr: PropTypes.array.isRequired,
+};
+
 const TimerMoves = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 25px;
   div {
     background-color: ${({ theme }) => theme.colors.jungleMistLIight};
-    width: 46.2%;
+    width: 151px;
     height: 70px;
     border-radius: 5px;
     display: flex;
@@ -109,6 +121,24 @@ const TimerMoves = styled.div`
       font-size: 24px;
       font-style: normal;
       font-weight: 700;
+    }
+  }
+
+  @media (min-width: ${Breakpoints.medium}) {
+    gap: 30px;
+    div {
+      width: 255px;
+      height: 72px;
+      border-radius: 10px;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 24px 0 21px;
+    }
+    span {
+      font-size: 18px !important;
+    }
+    p {
+      font-size: 32px !important;
     }
   }
 `;

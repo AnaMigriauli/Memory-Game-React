@@ -8,6 +8,9 @@ import styled from "styled-components";
 import StartGame from "./StartGame";
 import MultiPlayerResultModal from "./MultiPlayerResultModal";
 import { useEffect } from "react";
+import { Breakpoints } from "../assets/themes/themes";
+import PropTypes from "prop-types";
+
 const MultiplePlayer = ({
   totalPairs,
   iconsArr,
@@ -38,12 +41,6 @@ const MultiplePlayer = ({
     return <StartGame />;
   }
 
-  console.log(
-    state.totalPlayer,
-    isThreePlayer,
-    isForthPlayer,
-    fourthPlayerHandler
-  );
   return (
     <>
       {(state.matchedPair.length === totalPairs * 2 ||
@@ -65,7 +62,11 @@ const MultiplePlayer = ({
         />
       )}
       <GameContainer>
-        <GameHeader menuHandler={menuHandler} />
+        <GameHeader
+          menuHandler={menuHandler}
+          restartGame={restartGame}
+          startNewGame={newGameHandler}
+        />
         <GameBoard
           cardSet={state.cardSet}
           checkCards={checkCards}
@@ -75,25 +76,25 @@ const MultiplePlayer = ({
         />
         <Players>
           <Player
-            PlayerNumber="P1"
+            PlayerNumber={window.innerWidth <= 768 ? "P1" : "Player 1"}
             active={state.activePlayer === "P1"}
             score={state.playersScore.P1}
           ></Player>
           <Player
-            PlayerNumber="P2"
+            PlayerNumber={window.innerWidth <= 768 ? "P2" : "Player 2"}
             active={state.activePlayer === "P2"}
             score={state.playersScore.P2}
           ></Player>
           {isThreePlayer && (
             <Player
-              PlayerNumber="P3"
+              PlayerNumber={window.innerWidth <= 768 ? "P3" : "Player 3"}
               active={state.activePlayer === "P3"}
               score={state.playersScore.P3}
             ></Player>
           )}
           {isForthPlayer && (
             <Player
-              PlayerNumber="P4"
+              PlayerNumber={window.innerWidth <= 768 ? "P4" : "Player 4"}
               active={state.activePlayer === "P4"}
               score={state.playersScore.P4}
             ></Player>
@@ -105,7 +106,19 @@ const MultiplePlayer = ({
 };
 export default MultiplePlayer;
 
+MultiplePlayer.propTypes = {
+  totalPairs: PropTypes.number.isRequired,
+  iconsArr: PropTypes.array.isRequired,
+  isThreePlayer: PropTypes.bool.isRequired,
+  isForthPlayer: PropTypes.bool.isRequired,
+};
+
 const Players = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (min-width: ${Breakpoints.medium}) {
+    width: 100%;
+    gap: 11px;
+  }
 `;

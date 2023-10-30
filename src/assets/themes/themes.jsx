@@ -13,3 +13,7 @@ export const DefaultColors = {
     black: "#000000",
   },
 };
+
+export const Breakpoints = {
+  medium: "768px",
+};
