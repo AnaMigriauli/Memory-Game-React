@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Breakpoints } from "../assets/themes/themes";
 import PropTypes from "prop-types";
 const Player = ({ PlayerNumber, active, score }) => {
+  console.log(PlayerNumber);
   return (
     <Players active={active}>
       <span>{PlayerNumber}</span>

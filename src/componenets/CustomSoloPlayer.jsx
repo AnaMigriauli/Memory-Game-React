@@ -12,7 +12,6 @@ import { Breakpoints } from "../assets/themes/themes";
 import PropTypes from "prop-types";
 
 const CustomSoloPlayer = ({ totalPairs, iconsArr }) => {
-  // const [windowWidth, setWindowWidth] = useState(false);
   const {
     state,
     menuHandler,

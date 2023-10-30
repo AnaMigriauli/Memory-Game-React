@@ -1,5 +1,6 @@
 import CustomSoloPlayer from "./CustomSoloPlayer";
 import MultiplePlayer from "./MultiPlayer";
+import PropTypes from "prop-types";
 import icon1 from "../assets/images/1.svg";
 import icon2 from "../assets/images/2.svg";
 import icon3 from "../assets/images/3.svg";
@@ -57,6 +58,7 @@ export const EasyMultiplePlayerNumber = ({ isThreePlayer, isForthPlayer }) => {
     />
   );
 };
+
 export const HardMultiplePlayerNumber = ({ isThreePlayer, isForthPlayer }) => (
   <MultiplePlayer
     totalPairs={18}

@@ -30,16 +30,16 @@ const MultiplePlayer = ({
   } = useMemoryGame(totalPairs, iconsArr);
 
   useEffect(() => {
-    if (isForthPlayer) {
-      fourthPlayerHandler();
-    } else if (isThreePlayer) {
-      thirdPlayerHandler();
-    }
+    if (isForthPlayer) fourthPlayerHandler();
+    else if (isThreePlayer) thirdPlayerHandler();
   }, [isThreePlayer, isForthPlayer]);
 
   if (state.newGame) {
     return <StartGame />;
   }
+
+  const playerNumber = (playerNum) =>
+    window.innerWidth <= 768 ? `P${playerNum}` : `Player ${playerNum}`;
 
   return (
     <>
@@ -75,29 +75,16 @@ const MultiplePlayer = ({
           iconsArr={iconsArr?.length}
         />
         <Players>
-          <Player
-            PlayerNumber={window.innerWidth <= 768 ? "P1" : "Player 1"}
-            active={state.activePlayer === "P1"}
-            score={state.playersScore.P1}
-          ></Player>
-          <Player
-            PlayerNumber={window.innerWidth <= 768 ? "P2" : "Player 2"}
-            active={state.activePlayer === "P2"}
-            score={state.playersScore.P2}
-          ></Player>
-          {isThreePlayer && (
-            <Player
-              PlayerNumber={window.innerWidth <= 768 ? "P3" : "Player 3"}
-              active={state.activePlayer === "P3"}
-              score={state.playersScore.P3}
-            ></Player>
-          )}
-          {isForthPlayer && (
-            <Player
-              PlayerNumber={window.innerWidth <= 768 ? "P4" : "Player 4"}
-              active={state.activePlayer === "P4"}
-              score={state.playersScore.P4}
-            ></Player>
+          {[1, 2, isThreePlayer ? 3 : null, isForthPlayer ? 4 : null].map(
+            (playerNum) =>
+              playerNum && (
+                <Player
+                  key={playerNum}
+                  PlayerNumber={playerNumber(playerNum)}
+                  active={state.activePlayer === `P${playerNum}`}
+                  score={state.playersScore[`P${playerNum}`]}
+                />
+              )
           )}
         </Players>
       </GameContainer>

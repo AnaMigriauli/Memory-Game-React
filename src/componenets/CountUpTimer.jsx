@@ -34,22 +34,16 @@ const CountUpTimer = ({
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
+  const formattedTime = `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+
   if (
     matchPairLength === totalPairs * 2 ||
     matchPairLength === iconsArr?.length * 2
   ) {
-    timeElapsedHandler(
-      <Timer>
-        {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-      </Timer>
-    );
+    timeElapsedHandler(<Timer>{formattedTime}</Timer>);
   }
 
-  return (
-    <Timer>
-      {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-    </Timer>
-  );
+  return <Timer>{formattedTime}</Timer>;
 };
 
 export default CountUpTimer;

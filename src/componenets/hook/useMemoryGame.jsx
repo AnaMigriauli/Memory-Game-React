@@ -60,8 +60,7 @@ const reducer = (state, action) => {
         playersScore: { P1: 0, P2: 0, P3: 0, P4: 0 },
         newGame: false,
         isWinner: null,
-        threePlayer: false,
-        totalPlayer: 2,
+        totalPlayer: state.totalPlayer,
       };
     case actionTypes.TIMER:
       return { ...state, timer: action.payload };
