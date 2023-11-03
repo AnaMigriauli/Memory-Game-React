@@ -175,7 +175,7 @@ const Div = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${({ theme }) => theme.colors.blue};
-  padding: 80px 24px 116px 24px;
+  padding: 40px 24px 0 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -186,8 +186,6 @@ const Div = styled.div`
     margin-bottom: 45px;
   }
   @media (min-width: ${Breakpoints.medium}) {
-    padding: 169px 57px 168px 57px;
-
     h1 {
       font-size: 40px;
       margin-bottom: 78px;

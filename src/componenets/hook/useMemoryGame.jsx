@@ -349,6 +349,8 @@ const useMemoryGame = (totalPairs, iconsArr) => {
       if (scores.P3 === maxScore) winners.push(3);
       if (scores.P4 === maxScore) winners.push(4);
 
+      console.log(winners);
+
       let winner;
       if (winners.length > 1) {
         winner = "TIE";
@@ -356,9 +358,12 @@ const useMemoryGame = (totalPairs, iconsArr) => {
         winner = winners[0];
       }
 
+      console.log(winner);
       dispatch({ type: actionTypes.WINNER, payload: winner });
     }
   };
+  console.log(state.winner);
+
   return {
     state,
     checkCards,
